@@ -1,0 +1,17 @@
+{
+  "short_name": "Krishnam",
+  "name": "Krishnam Gupta | AI/ML Developer & Portfolio",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#060606",
+  "theme_color": "#ff7b00",
+  "display": "standalone",
+  "orientation": "portrait"
+}

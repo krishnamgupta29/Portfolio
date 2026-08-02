@@ -1,0 +1,431 @@
+@import "tailwindcss";
+
+/* Custom variant: light mode using .light class on :root */
+@custom-variant light (&:where(.light, .light *));
+
+@theme {
+  --color-harvest-orange: #ff7b00;
+  --color-dark-orange: #ff8800;
+  --color-deep-saffron: #ff9500;
+  --color-amber-glow: #ffa200;
+  --color-orange-glow: #ffaa00;
+  --color-amber-flame: #ffb700;
+  --color-school-bus: #ffc300;
+  --color-gold: #ffd000;
+  --color-bright-gold: #ffdd00;
+  --color-sunbeam-yellow: #ffea00;
+  
+  --color-bg-dark: #060606;
+  --color-bg-dark-card: rgba(18, 18, 18, 0.6);
+  --color-bg-light: #f7f5f0;
+  --color-bg-light-card: rgba(255, 255, 255, 0.7);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+/* Custom CSS variables and styles */
+:root {
+  color-scheme: dark;
+  --cursor-color: #ff8800;
+  transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s ease;
+}
+
+:root.light {
+  color-scheme: light;
+  --cursor-color: #ff7b00;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg-dark);
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Site-wide Custom Cursor: Hide native OS cursor on desktop devices */
+@media (pointer: fine) {
+  html, body, a, button, input, select, textarea, [role="button"], .clickable {
+    cursor: none !important;
+  }
+}
+
+:root.light body {
+  background-color: var(--color-bg-light);
+  color: #1a1a1a;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060606;
+}
+
+:root.light ::-webkit-scrollbar-track {
+  background: #f7f5f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ff7b00 0%, #ffd000 100%);
+  border-radius: 9999px;
+  box-shadow: 0 0 5px rgba(255, 123, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff8800 0%, #ffea00 100%);
+  box-shadow: 0 0 10px rgba(255, 123, 0, 0.6);
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+:root.light .glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(255, 123, 0, 0.05);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 136, 0, 0.3);
+  box-shadow: 0 10px 40px 0 rgba(255, 123, 0, 0.15);
+}
+
+/* Noise overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  content: "";
+  opacity: 0.04;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+:root.light .noise-overlay {
+  opacity: 0.02;
+}
+
+/* Custom selection */
+::selection {
+  background: #ff7b00;
+  color: #000;
+}
+
+/* Magnetic link effects */
+.hover-target {
+  position: relative;
+}
+
+/* Shine effect */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.15);
+  transform: rotate(30deg);
+  transition: transform 0s;
+  pointer-events: none;
+}
+
+.shine-effect:hover::after {
+  transform: translate(600%, 0) rotate(30deg);
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Orbiting Skills Solar System */
+.orbit-container {
+  perspective: 1200px;
+}
+
+/* Selection dot indicator */
+.nav-dot {
+  position: relative;
+}
+
+.nav-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-dot.active::after {
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+/* Radial wipe for dark/light toggle */
+.theme-wipe-transition {
+  animation: theme-wipe 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes theme-wipe {
+  from {
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    clip-path: circle(150% at 50% 50%);
+  }
+}
+
+/* Programmatic Skills Orbit Rotation Keyframes */
+@keyframes orbit-rotate {
+  from {
+    transform: rotate(var(--start-angle, 0deg));
+  }
+  to {
+    transform: rotate(var(--end-angle, 360deg));
+  }
+}
+
+/* Force light theme readability overrides */
+:root.light {
+  background-color: var(--color-bg-light) !important;
+  color: #1a1a1a !important;
+}
+
+:root.light body {
+  background-color: var(--color-bg-light) !important;
+  color: #1a1a1a !important;
+}
+
+:root.light h1,
+:root.light h2,
+:root.light h3,
+:root.light h4,
+:root.light h5,
+:root.light h6,
+:root.light .text-white,
+:root.light .dark\:text-white {
+  color: #111111 !important;
+}
+
+:root.light p,
+:root.light li,
+:root.light .text-white\/70,
+:root.light .dark\:text-white\/70,
+:root.light .text-white\/60,
+:root.light .dark\:text-white\/60 {
+  color: #2b2b2b !important;
+}
+
+:root.light .text-white\/50,
+:root.light .dark\:text-white\/50,
+:root.light .text-white\/40,
+:root.light .dark\:text-white\/40,
+:root.light .text-white\/30,
+:root.light .dark\:text-white\/30 {
+  color: #555555 !important;
+}
+
+:root.light .glass-card,
+:root.light .bg-white\/3,
+:root.light .dark\:bg-white\/3,
+:root.light [class*="bg-[#121212]"],
+:root.light [class*="bg-[#141414]"],
+:root.light [class*="bg-[#161616]"],
+:root.light .bg-black\/20 {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #1a1a1a !important;
+  box-shadow: 0 10px 30px rgba(255, 123, 0, 0.04) !important;
+}
+
+:root.light input,
+:root.light textarea,
+:root.light select,
+:root.light .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #111111 !important;
+}
+
+:root.light select option {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+}
+
+:root.light .nav-dot {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+:root.light .nav-dot.active {
+  color: var(--color-harvest-orange);
+}
+
+/* Custom section highlight glow pulse */
+.glow-pulse {
+  animation: glow-pulse-keyframes 2s ease-in-out forwards;
+}
+
+@keyframes glow-pulse-keyframes {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 123, 0, 0);
+    outline: 2px solid rgba(255, 123, 0, 0);
+  }
+  25% {
+    box-shadow: 0 0 45px 15px rgba(255, 123, 0, 0.45);
+    outline: 2px solid rgba(255, 123, 0, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 123, 0, 0);
+    outline: 2px solid rgba(255, 123, 0, 0);
+  }
+}
+
+/* corkboard/grid texture background */
+.corkboard-grid {
+  background-image: 
+    radial-gradient(rgba(255, 123, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 24px 24px, 20px 20px, 20px 20px;
+}
+
+/* section entrance reveal mask wipe */
+.reveal-wipe-container {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.reveal-wipe-text {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  transition: clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-wipe-container.in-view .reveal-wipe-text {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.reveal-wipe-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 123, 0, 0.85) 50%, transparent 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.reveal-wipe-container.in-view .reveal-wipe-overlay {
+  animation: reveal-wipe-sweep-keyframes 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes reveal-wipe-sweep-keyframes {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1.2);
+    transform-origin: left;
+  }
+  50.1% {
+    transform-origin: right;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+
+/* Viewport Nav Sweep */
+.nav-sweep-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+}
+
+body.nav-sweep-down .nav-sweep-overlay {
+  background: linear-gradient(180deg, rgba(255, 123, 0, 0) 0%, rgba(255, 123, 0, 0.15) 50%, rgba(255, 123, 0, 0) 100%);
+  animation: viewport-sweep-down 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.nav-sweep-up .nav-sweep-overlay {
+  background: linear-gradient(0deg, rgba(255, 123, 0, 0) 0%, rgba(255, 123, 0, 0.15) 50%, rgba(255, 123, 0, 0) 100%);
+  animation: viewport-sweep-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes viewport-sweep-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  30%, 60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes viewport-sweep-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  30%, 60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+/* Drifting particles inside boards */
+.drifting-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ffd000;
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.15;
+  animation: drift-keyframes 12s infinite alternate ease-in-out;
+}
+
+@keyframes drift-keyframes {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(var(--drift-x, 25px), var(--drift-y, -35px));
+  }
+}
+

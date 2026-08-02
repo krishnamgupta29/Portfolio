@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff7b00" />
+      <stop offset="100%" stop-color="#ffd000" />
+    </linearGradient>
+  </defs>
+  <style>
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 4px #ff8800); }
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .bg-circle {
+      transform-origin: center;
+      animation: pulse 3s infinite ease-in-out;
+    }
+    .outer-ring {
+      transform-origin: center;
+      animation: rotate 10s infinite linear;
+      stroke-dasharray: 10 15;
+    }
+  </style>
+  <circle class="bg-circle" cx="50" cy="50" r="45" fill="url(#glowGrad)" />
+  <circle class="outer-ring" cx="50" cy="50" r="40" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6" />
+  <text x="50" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" fill="#060606" text-anchor="middle">KG</text>
+</svg>
