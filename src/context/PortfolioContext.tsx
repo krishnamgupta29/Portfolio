@@ -43,29 +43,42 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [activeToast, setActiveToast] = useState<Badge | null>(null);
   const [visitorCount, setVisitorCount] = useState<number>(0);
 
-  // Fetch / Increment visitor count
+  // Fetch / Increment visitor count (Session-based to prevent refresh inflation)
   useEffect(() => {
-    // Always increment on load (both local & production) to count every visit/refresh
-    const url = 'https://api.counterapi.dev/v1/krishnamgupta-universe/visits/up';
+    const hasCountedSession = sessionStorage.getItem('portfolio-session-counted');
+    const isNewSession = !hasCountedSession;
 
-    fetch(url)
+    // Use /up ONLY for new sessions; read current count on simple reloads
+    const endpoint = isNewSession
+      ? 'https://api.counterapi.dev/v1/krishnamgupta-portfolio-v1/visits/up'
+      : 'https://api.counterapi.dev/v1/krishnamgupta-portfolio-v1/visits';
+
+    fetch(endpoint)
       .then((res) => res.json())
       .then((data) => {
         if (data && typeof data.count === 'number') {
           setVisitorCount(data.count);
+          if (isNewSession) {
+            sessionStorage.setItem('portfolio-session-counted', 'true');
+          }
         }
       })
       .catch((err) => {
         console.warn('CounterAPI error, falling back to local simulation:', err);
         const localCount = localStorage.getItem('visitor-count-local');
         if (localCount) {
-          const nextCount = parseInt(localCount) + 1;
+          const countNum = parseInt(localCount);
+          const nextCount = isNewSession ? countNum + 1 : countNum;
           setVisitorCount(nextCount);
-          localStorage.setItem('visitor-count-local', String(nextCount));
+          if (isNewSession) {
+            localStorage.setItem('visitor-count-local', String(nextCount));
+            sessionStorage.setItem('portfolio-session-counted', 'true');
+          }
         } else {
           const seedCount = 1;
           setVisitorCount(seedCount);
           localStorage.setItem('visitor-count-local', String(seedCount));
+          sessionStorage.setItem('portfolio-session-counted', 'true');
         }
       });
   }, []);
