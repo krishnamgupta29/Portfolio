@@ -3,6 +3,8 @@ import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import { Analytics } from '@vercel/analytics/react';
+
 // Import UI elements
 import NoiseOverlay from './components/NoiseOverlay';
 import CustomCursor from './components/CustomCursor';
@@ -244,6 +246,7 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => (
   <PortfolioProvider>
     <AppContent />
+    <Analytics />
   </PortfolioProvider>
 );
 
